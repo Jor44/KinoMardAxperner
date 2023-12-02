@@ -1,0 +1,67 @@
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 130px;
+  }
+  
+  .logo h1 {
+    margin: 0;
+  }
+
+  .kinomard-logo{
+    display: flex;
+    gap: 5px;
+  }
+
+  .movie-logo{
+    height: 35px;
+    color: chocolate;
+  }
+  
+  .search-bar {
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-bar input {
+    padding: 8px;
+    margin-right: 8px;
+  }
+  
+  .search-bar button {
+    padding: 8px 12px;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+
+  
+/* Media queries for responsiveness */
+@media screen and (max-width: 1200px) {
+    .search-bar input {
+      width: 150px;
+    }
+  }
+  
+  @media screen and (max-width: 998px) {
+    .search-bar input {
+      width: 120px;
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    header {
+     .search-bar input {
+        width: 100px;
+     }
+    }
+}
+
+  .kinomard{
+    color: chocolate;
+    font-size: 30px;
+  }
