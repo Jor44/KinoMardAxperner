@@ -1,17 +1,19 @@
 import { useRef, useState, useEffect } from "react";
 import { faCheck, faTimes, faInfoCircle, faL } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import './index.css';
 import axios from "./api/axios";
+import { NavLink } from "react-router-dom";
 // import  registerUser  from "./userService";
 // import ApiService from "./apiService";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const REGISTER_URL = 'http://localhost:8080/api/users/register';
 
 const Register = () => {
     const userRef = useRef();
+    const emailRef = useRef();//email
     const errRef = useRef();
 
     const [user, setUser] = useState('');
@@ -25,6 +27,10 @@ const Register = () => {
     const [matchPwd, setMatchPwd] = useState('');
     const [validMatch, setValdiMatch] = useState(false);
     const [matchFocus, setMatchFocus] = useState(false);
+
+    const [email, setEmail] = useState('');
+    const [validEmail, setValidEmail] = useState(false);
+    const [emailFocus, setEmailFocus] = useState(false);
 
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
@@ -50,8 +56,15 @@ const Register = () => {
     }, [pwd, matchPwd])
 
     useEffect(() => {
+        const result = EMAIL_REGEX.test(email);
+        console.log(result);
+        console.log(email);
+        setValidEmail(result);
+    }, [email])
+
+    useEffect(() => {
         setErrMsg('');
-    }, [user, pwd, matchPwd])
+    }, [user, email, pwd, matchPwd])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -60,15 +73,27 @@ const Register = () => {
         // recheck the patterns before submitting.
         const v1 = USER_REGEX.test(user);
         const v2 = PWD_REGEX.test(pwd);
-        console.log(v1,v2)
+        console.log(v1, v2)
         if (!v1 || !v2) {
             setErrMsg("Invalid Entry");
             return;
         }
-    
+
+        const v3 = EMAIL_REGEX.test(email);
+        console.log(v3);
+        console.log(email);
+        if (!v3) {
+            setErrMsg("Invalid Email");
+            return;
+        }
+
         try {
-            
-            const userData = { username: user, password: pwd }; // Assuming these are the fields expected by your backend
+
+            const userData = {
+                username: user,
+                email: email,
+                password: pwd
+            }; // Assuming these are the fields expected by your backend
 
             const response = await axios.post(REGISTER_URL, userData);
             console.log("Response from backend:", response.data);
@@ -87,7 +112,7 @@ const Register = () => {
             errRef.current.focus(); // Focus on the error message for accessibility reasons
         }
     }
-    
+
     return (
         <>
             {
@@ -193,13 +218,41 @@ const Register = () => {
                                 <FontAwesomeIcon className="icon" icon={faInfoCircle} />
                                 Must match the first password input field.
                             </p>
+                            <label htmlFor="email">
+                                Email:
+                                <span className={validEmail ? "valid" : "hide"}>
+                                    <FontAwesomeIcon className="icon" icon={faCheck} />
+                                </span>
+                                <span className={validEmail || !email ? "hide" :
+                                    "invalid"}>
+                                    <FontAwesomeIcon className="icon" icon={faTimes} />
+                                </span>
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                ref={emailRef}
+                                autoComplete="off"
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                aria-invalid={validEmail ? "false" : "true"}
+                                aria-describedby="emailnote"
+                                onFocus={() => setEmailFocus(true)}
+                                onBlur={() => setEmailFocus(false)}
+                            />
+                            <p id="emailnote" className={emailFocus && email &&
+                                !validEmail ? "instructions" : "offscreen"}>
+                                <FontAwesomeIcon className="icon" icon={faInfoCircle} />
+                                Please enter a valid email address.
+                            </p>
                             <button disabled={!validName || !validPwd || !validMatch ? true : false}>Sign up</button>
                         </form>
                         <p className="already">
                             Already registered?<br />
                             <span className="line">
-                                {/* react router */}
-                                <a href="#">Sign in</a>
+                                <NavLink to="/login" className="sign-in-btn">
+                                    Մուտք
+                                </NavLink>
                             </span>
                         </p>
                     </section>

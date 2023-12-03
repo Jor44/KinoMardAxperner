@@ -1,11 +1,9 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Movies from './Movies';
+import { Route, Routes } from 'react-router-dom';
 import Register from './Register'
 import Home from './Home';
 import Login from './Login';
 import SingleMovie from './SingleMovie'
 import Error from './Error';
-import { Header } from './header/Header';
 
 function App() {
   return (

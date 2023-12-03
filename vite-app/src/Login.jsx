@@ -3,6 +3,7 @@ import AuthContext from "./context/AuthProvider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import axios from "./api/axios";
+import { NavLink } from "react-router-dom";
 const LOGIN_URL = '/auth';
 
 const Login = () => {
@@ -98,8 +99,9 @@ const Login = () => {
                     <p className="already">
                         Need an Account?<br />
                         <span className="line">
-                            {/* router link */}
-                            <a href="#">Sign Up</a>
+                        <NavLink to="/register" className="sign-up-btn">
+                                    Գրանցվել
+                                </NavLink>
                         </span>
                     </p>
                 </section>
